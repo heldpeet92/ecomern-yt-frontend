@@ -11,6 +11,11 @@ export const productSlice = createSlice({
         updateProducts: (_, action) => {
             return action.payload;
         }
+    },
+    extraReducers: (builder) =>{
+        builder.addMatcher(appApi.endpoints.createProduct.matchFulfilled, (_, {payload})=>payload);
+        builder.addMatcher(appApi.endpoints.updateProduct.matchFulfilled, (_, {payload})=>payload);
+        builder.addMatcher(appApi.endpoints.deleteProduct.matchFulfilled, (_, {payload})=>payload);
     }
 })
 

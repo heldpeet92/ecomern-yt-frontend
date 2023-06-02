@@ -1,3 +1,8 @@
+body{
+    background-color: #f4f4f4;
+    /* background-color: #F2E8DF; */
+}
+
 .category-tile {
     height: 250px;
     background-size: cover;

@@ -7,3 +7,50 @@
 .logo{
     width:50px;
 }
+
+#cartcount{
+    font-size: 10px;
+    background-color: red;
+    color: white;
+    padding: 2px 4px;
+    vertical-align: top;
+    margin-left: -8px;
+    border-radius: 50%;
+    margin-top: -5px;
+}
+
+.badge{
+    padding-left: 9px;
+    padding-right: 9px;
+    border-radius: 9px;
+}
+
+.fa-shopping-cart{
+    font-size:20px;
+}
+.mmNavBar{
+    background-color: #779EA6;
+}
+.mmTitle{
+    font-family: Noto-Serif-Display-Medium, sans-serif;
+    font-size: 40px;
+}
+@font-face {
+    font-family: 'Noto-Serif-Display-Medium';
+    src:url('../../src/fonts//Noto-Serif-Display-Medium.ttf.woff') format('woff'),
+        url('../../src/fonts//Noto-Serif-Display-Medium.ttf.svg#Noto-Serif-Display-Medium') format('svg'),
+        url('../../src/fonts//Noto-Serif-Display-Medium.ttf.eot'),
+        url('../../src/fonts/Noto-Serif-Display-Medium.ttf.eot') format('embedded-opentype'); 
+    font-weight: normal;
+    font-style: normal;
+}
+.notifications-container{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    max-height: 200px;
+    overflow-y: scroll;
+    border: 1px solid gray;
+    background-color: white;
+    width:200px;
+    z-index: 99;
+}

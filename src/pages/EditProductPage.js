@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, Col, Container, Form, Row, Button, FormGroup, FormControl} from 'react-bootstrap';
-import { Route, useNavigate,Link } from 'react-router-dom';
-import { useCreateProductMutation } from '../services/appApi';
-import './NewProduct.css';
+import { Route, useNavigate,Link, useParams } from 'react-router-dom';
+import { useCreateProductMutation, useUpdateProductMutation } from '../services/appApi';
+import './EditProductPage.css';
 import axios from '../axios.js';
 
-const NewProduct = () => {
+const EditProductPage = () => {
+  const {id} = useParams();
   const [name,setName] = useState("");
   const [description,setDescription] = useState("");
   const [price,setPrice] = useState("");
@@ -14,7 +15,19 @@ const NewProduct = () => {
   const [imgToRemove, setImgToRemove] = useState(null);
   const navigate = useNavigate();
 
-  const [createProduct, {isError, error, isLoading, isSuccess}] = useCreateProductMutation();
+  const [updateProduct, {isError, error, isLoading, isSuccess}] = useUpdateProductMutation();
+
+  useEffect(()=>{
+    axios.get('/products/'+ id)
+      .then(({data})=>{
+        const product = data.product;
+        setName(product.name);
+        setCategory(product.category);
+        setDescription(product.description);
+        setImages(product.pictures);
+        setPrice(product.price);
+      }).catch((e)=>console.log(e));
+  }, [id]);
 
   function handleRemoveImg(imgObj) {
     setImgToRemove(imgObj.public_id);
@@ -32,7 +45,7 @@ function handleSubmit(e) {
   if (!name || !description || !price || !category || !images.length) {
       return alert("Please fill out all the fields");
   }
-  createProduct({ name, description, price, category, images }).then(({ data }) => {
+  updateProduct({ id, name, description, price, category, images }).then(({ data }) => {
       if (data.length > 0) {
           setTimeout(() => {
               navigate("/");
@@ -61,8 +74,8 @@ function handleSubmit(e) {
       <Row className='mt-4'>
         <Col md={6} className="new-product__form--container">
         <Form style={{width:"100%"}} onSubmit={handleSubmit}>
-                <h1>Create a product</h1>
-                {isSuccess && <Alert variant='success'>Product successfully created</Alert>}
+                <h1>Edit product</h1>
+                {isSuccess && <Alert variant='success'>Product successfully updated</Alert>}
                 {isError && <Alert variant="danger">{error.data}</Alert>}
                 <FormGroup className= "mb-3">
                     <Form.Label>Product name</Form.Label>
@@ -78,7 +91,7 @@ function handleSubmit(e) {
                 </FormGroup>
                 <FormGroup className= "mb-3" onChange={(e)=>setCategory(e.target.value)}>
                     <Form.Label>Category</Form.Label>
-                    <Form.Select>
+                    <Form.Select value={category} >
                       <option disabled selected>-- SELECT CATEGORY --</option>
                       <option value="technology">technology</option>
                       <option value="tablets">tablets</option>
@@ -113,4 +126,4 @@ function handleSubmit(e) {
   )
 }
 
-export default NewProduct
+export default EditProductPage

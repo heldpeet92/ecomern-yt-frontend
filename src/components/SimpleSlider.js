@@ -1,18 +1,24 @@
 import React, { Component } from "react";
 import Slider from "react-slick";
+import './SimpleSlider.css'
 
 export default class SimpleSlider extends Component {
   render() {
     const settings = {
-      dots: true,
+      dots: false,
       infinite: true,
       speed: 500,
       slidesToShow: 1,
-      slidesToScroll: 1
+      slidesToScroll: 1,
+      autoplay: true,
+      speed: 3000,
+      autoplaySpeed: 10000,
+      pauseOnHover: true
     };
     return (
+      <>
       <div>
-        <h2> Single Item</h2>
+        <h2> Kínálatunk</h2>
         <Slider {...settings}>
           <div>
             <h3>1</h3>
@@ -34,6 +40,7 @@ export default class SimpleSlider extends Component {
           </div>
         </Slider>
       </div>
+      </>
     );
   }
 }
