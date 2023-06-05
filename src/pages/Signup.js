@@ -20,7 +20,7 @@ function Signup() {
             <Row>
                 <Col md={6} className="signup__form--container">
                     <Form style={{ width: "100%" }} onSubmit={handleSignup}>
-                        <h1>Create an account</h1>
+                        <h1>Fiók létrehozása</h1>
                         {isError && <Alert variant="danger">{error.data}</Alert>}
                         <Form.Group>
                             <Form.Label>Full Name</Form.Label>
