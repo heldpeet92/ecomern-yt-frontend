@@ -26,3 +26,5 @@ node_modules
 /src/components/fonts
 /src/fonts
 .env
+dev.env
+stag.env
