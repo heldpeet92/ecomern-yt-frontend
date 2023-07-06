@@ -10,7 +10,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [login, { isError, isLoading, error }] = useLoginMutation();
     function handleLogin(e){
-        const copyCartObj = JSON.parse(localStorage.getItem("cart"));
+        const copyCartObj = JSON.parse(localStorage.getItem("nologincart"));
         e.preventDefault();
         login({email,password,copyCartObj});
         if(!!copyCartObj)

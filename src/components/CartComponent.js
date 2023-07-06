@@ -5,12 +5,12 @@ import { Alert, Col, Container, Row, Table } from 'react-bootstrap';
 import { useSelector } from 'react-redux'
 import CheckoutForm from '../components/CheckoutForm';
 import { useDecreaseCartProductMutation, useIncreaseCartProductMutation, useRemoveFromCartMutation } from '../services/appApi';
-import './CartPage.css'
+import './CartComponent.css'
 import Payment from '../components/Payment';
-import CartComponent from '../components/CartComponent';
+import { useRef } from 'react';
 
 
-const CartPage = () => {
+const CartComponent = ({setSharedState }) => {
     const [ stripePromise, setStripePromise ] = useState(null);
     
     useEffect(() => {
@@ -27,28 +27,26 @@ const CartPage = () => {
         return storedValue ? JSON.parse(storedValue) : {total: 0, count: 0} ;
       });
 
-      const [sharedState, setSharedState] = useState(userCartOjb.total);
-      
     const handleCartChange = (event) => {
     setPageCart(event.target.value);
     };
 
-    useEffect(() => {
-    localStorage.setItem('nologincart', JSON.stringify(pageCart));
-    }, [pageCart]);
-    const storedCartData = localStorage.getItem('nologincart');
-    const nologincart = storedCartData ? JSON.parse(storedCartData) : {total: 0, count: 0};
-
-
-    if(!user){
-        userCartOjb = nologincart;
-    }
+   const couponRef = useRef(null);
 
     let cart = products.filter(product => userCartOjb[product._id] != null);
     const [increaseCart] =  useIncreaseCartProductMutation();
     const [decreaseCart] =  useDecreaseCartProductMutation();
     const [removeFromCart, {isLoading}] =  useRemoveFromCartMutation();
+    const [validCoupon, setValidCoupon] = useState(false);
+    const [couponReadonly, setCouponReadonly] = useState(false);
 
+    const handleCoupon = ()=>{
+        const cupon = couponRef.current.value;
+        if (cupon === "MELTME2023BOGI"){
+            setValidCoupon(true);
+            setCouponReadonly(true);
+        }
+    }
 
     const appearance = {
         theme: 'stripe',
@@ -57,7 +55,7 @@ const CartPage = () => {
         stripePromise,
         appearance,
       };
-    
+    setSharedState(userCartOjb.total);
     const handleDecrease = (e, product) =>{
         if(user){
         const quantity = user.cart[e.productId];
@@ -88,21 +86,62 @@ const CartPage = () => {
     return (
         <>
         {user && (
-        <Container style={{minHeight: '95vh'}} className='cart-container'>
-        <h1 className='pt-2 h3'></h1>
-            <Row>
-            
+        <Container style={{minHeight: '45vh'}} className='cart-container'>
+        <h1 className='pt-2 h3'>Kosár</h1>
             {cart.length >0 &&(
-            <Col md={6}>
+            <Col>
                 
-                   <CartComponent setSharedState={setSharedState}/>
+                    <>
+                        <Table responsive="sm" className='cart-table'>
+                            <thead>
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <th>Termék&nbsp;megnevezése</th>
+                                    <th>Termék&nbsp;ára</th>
+                                    <th>Darabszám</th>
+                                    <th>Részösszeg</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {/**loop  */}
+                                {cart.map(item=>(
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>
+                                            {!isLoading &&<i className='fa fa-times' style={{marginRight: 10, cursor: "pointer"}} onClick={()=> removeFromCart({productId: item._id, price: item.price,userId: user?._id})}></i>}
+                                            {/* <img src={item.pictures[0].url} style={{width:100, height:100, objectFit: 'cover'}}/> */}
+                                            {item.name}
+                                        </td>
+                                        <td>{item.price} Ft</td>
+                                        <td>
+                                            <span className='quantity-indicator'>
+                                                <i className='fa fa-minus-circle' style={{marginRight: 10}} onClick={()=>handleDecrease({productId: item._id, price: item.price,userId: user?._id})}></i>
+                                                <span>{userCartOjb[item._id]}</span>
+                                                <i className='fa fa-plus-circle' style={{marginLeft: 10}} onClick={()=>increaseCart({productId: item._id, price: item.price, userId: user?._id})}></i>
+                                            </span>    
+                                        </td>
+                                        <td>{item.price*userCartOjb[item._id]}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                        <Row>
+                            <Col md={6}>Van kuponkódod? Add meg itt!</Col>
+                            <Col md={4}>
+                            <input disabled={couponReadonly} ref={couponRef} type='text' className='form-control' placeholder='KUPONKÓD'/>
+                            </Col>
+
+                            <Col md={2}>
+                            <button type='button' className='btn btn-success' onClick={handleCoupon}>OK</button>
+                            </Col>
+                        </Row>
+                        <br/>
+                        <div>
+                            <h3 className='h4 pt-4'>Összesen {userCartOjb.total * (validCoupon ? 0.9 : 1.0)} Ft</h3>
+                        </div>
+                    </>
                 
             </Col>)}
-            <Col md={cart.length === 0? 12:6}>
-                {cart.length === 0 ? <Alert variant='info'>Az Ön kosara jelenleg üres!</Alert>: <Payment stripePromise={stripePromise} sharedState={sharedState}/>
-                }
-            </Col>
-            </Row>
         </Container>)}
         {!user && (
         <Container style={{minHeight: '95vh'}} className='cart-container'>
@@ -149,6 +188,7 @@ const CartPage = () => {
                                 ))}
                             </tbody>
                         </Table>
+                        <input type='text'></input>
                         <div>
                             <h3 className='h4 pt-4'>Összesen {pageCart.total} Ft</h3>
                         </div>
@@ -161,4 +201,4 @@ const CartPage = () => {
   )
 }
 
-export default CartPage
+export default CartComponent

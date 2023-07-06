@@ -13,13 +13,13 @@ const AdminDashboard = () => {
             <Col sm={3}>
                 <Nav variant='pills' className='flex-column'>
                     <Nav.Item>
-                        <Nav.Link eventKey="products">Products</Nav.Link>
+                        <Nav.Link eventKey="products">Termékek</Nav.Link>
                     </Nav.Item> 
                     <Nav.Item>
-                        <Nav.Link eventKey="orders">Orders</Nav.Link>
+                        <Nav.Link eventKey="orders">Rendelések</Nav.Link>
                     </Nav.Item>  
                     <Nav.Item>
-                        <Nav.Link eventKey="clients">Clients</Nav.Link>
+                        <Nav.Link eventKey="clients">Regisztrált ügyfelek</Nav.Link>
                     </Nav.Item>    
                 </Nav>
             </Col>

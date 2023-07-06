@@ -90,17 +90,16 @@ function handleSubmit(e) {
                     <FormControl type="number" placeholder="Enter product price" value={price} required onChange={(e)=>setPrice(e.target.value)}/>
                 </FormGroup>
                 <FormGroup className= "mb-3" onChange={(e)=>setCategory(e.target.value)}>
-                    <Form.Label>Category</Form.Label>
-                    <Form.Select value={category} >
-                      <option disabled selected>-- SELECT CATEGORY --</option>
-                      <option value="technology">technology</option>
-                      <option value="tablets">tablets</option>
-                      <option value="phones">phones</option>
-                      <option value="laptops">laptops</option>
+                <Form.Label>Kategória</Form.Label>
+                    <Form.Select>
+                      <option disabled selected>-- VÁLASSZ --</option>
+                      <option value="illatgyertya">Illatgyertya</option>
+                      <option value="wax">Wax</option>
+                      <option value="furdobomba">Fürdőbomba</option>
                     </Form.Select>
                 </FormGroup>
                 <FormGroup className= "mb-3">
-                    <Button type="button" onClick={showWidget}>Upload images</Button>
+                    <Button type="button" onClick={showWidget}>Képek feltöltése</Button>
                     <div className='images-preview-container'>                     
                      {
                       images.map((image)=>(
@@ -115,7 +114,7 @@ function handleSubmit(e) {
                 </FormGroup>
                 
                 <FormGroup>
-                    <Button type="submit" disabled={isLoading ||isSuccess}>Create Product</Button>
+                    <Button type="submit" disabled={isLoading ||isSuccess}>Mentés</Button>
                 </FormGroup>
             </Form>
         </Col>

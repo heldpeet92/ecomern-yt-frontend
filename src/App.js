@@ -15,28 +15,35 @@ import CartPage from './pages/CartPage';
 import OrdersPage from './pages/OrdersPage';
 import AdminDashboard from './pages/AdminDashboard';
 import EditProductPage from './pages/EditProductPage';
-import { useEffect } from 'react';
+import { useEffect,useState } from 'react';
 import { io } from 'socket.io-client';
 import { addNotification } from './features/userSlice';
+import ThankYouPage from './pages/ThankYouPage';
+import Completion from './components/Completion';
+import Payment from './components/Payment';
+import {loadStripe} from '@stripe/stripe-js';
 
 function App() {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [ stripePromise, setStripePromise ] = useState(null);
   useEffect(()=>{
-    const socket = io("ws://localhost:8080");
-    socket.off('notification').on('notification', (msgObject, user_id)=>{
-      //logic fo notification
-      if(user_id === user._id){
-        dispatch(addNotification(msgObject));
-      }
-    });
-    socket.off('new-order').on('new-order', (msgObject)=>{
-      if(user.isAdmin){
-        dispatch(addNotification(msgObject));
-      }
-    })
+    // const socket = io("ws://"+process.env.REACT_APP_APIURL);
+    // socket.off('notification').on('notification', (msgObject, user_id)=>{
+    //   //logic fo notification
+    //   if(user_id === user._id){
+    //     dispatch(addNotification(msgObject));
+    //   }
+    // });
+    // socket.off('new-order').on('new-order', (msgObject)=>{
+    //   if(user.isAdmin){
+    //     dispatch(addNotification(msgObject));
+    //   }
+    // })
     
   })
+
+
   return (
     <div className='App'>
       <BrowserRouter>
@@ -48,8 +55,8 @@ function App() {
           <Route path='/login' element={<Login/>}/>
           <Route path='/signup' element={<Signup/>}/>
         </>)}
+        <Route path='/cart' element={<CartPage/>} />
         {user && <>
-          <Route path='/cart' element={<CartPage/>} />
           <Route path='/orders' element={<OrdersPage/>} />
         </>}
         {user && user.isAdmin &&(
@@ -62,7 +69,10 @@ function App() {
         <Route path='/product/:id' element={<ProductPage/>}/>
         <Route path='/category/:category' element={<CategoryPage/>}/>
         <Route path='/new-product' element={<NewProduct/>}/>
+        <Route path='/thankyou' element={<ThankYouPage/>}/>
         <Route path='*' element={<Home/>}/>
+        {/* <Route path="/" element={<Payment stripePromise={stripePromise} />} /> */}
+        {/* <Route path="/completion" element={<Completion stripePromise={stripePromise} />} /> */}
       </Routes>
       </BrowserRouter>
     </div>

@@ -4,9 +4,6 @@ import "react-toastify/dist/ReactToastify.css";
     
 const ToastyToast = ({type,body }) => {
 
-        
-
-        console.log(type)
         switch(type) {
             case 'error':
                 

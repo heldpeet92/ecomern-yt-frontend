@@ -48,15 +48,17 @@ const OrdersPage = () => {
                     <th>Állapot</th>
                     <th>Dátum</th>
                     <th>Összeg</th>
+                    <th>FOXPOST automata</th>
                 </tr>
             </thead>
             <tbody>
                 {orders.map((order)=> (
                     <tr>
-                        <td>{order._id}</td>
+                        <td>MM{order.orderId}</td>
                         <td><Badge bg={`${order.status === "processing"?"warning":"success"}`} text="white">{order.status}</Badge></td>
                         <td>{Moment(order.date).format("YYYY. MM. DD.")}</td>
                         <td>{order.total} Ft</td>
+                        <td>{order.selectedMachineInfo}</td>
                     </tr>
                 ))}
             </tbody>

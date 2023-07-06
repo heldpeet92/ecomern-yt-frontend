@@ -1,7 +1,7 @@
 import axios from '../axios';
 import React, {useState, useEffect, useRef} from 'react'
 import AliceCarousel from 'react-alice-carousel';
-import { Badge, ButtonGroup, Col, Container, Row, Button, Form } from 'react-bootstrap';
+import { Badge, ButtonGroup, Col, Container, Row, Button, Form, FormControl } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import {  useParams } from 'react-router-dom'
 import Loading from '../components/Loading';
@@ -21,6 +21,13 @@ const ProductPage = () => {
     const [similar, setSimilar] = useState(null);
     const [addToCart, {isSuccess}] = useAddToCartMutation();
     const quantityRef = useRef();
+
+    const [productQuantity, setproductQuantity] = useState(1);
+
+  
+    const handleProductQuantityChange = (event) => {
+      setproductQuantity(event.target.value);
+    };
 
     const notify = () => {
         toast("Default Notification !");
@@ -78,7 +85,21 @@ const ProductPage = () => {
     const handleAddToCart = (props) =>{
 
         if(!!user){
-            addToCart({ userId: props.userId, productId: props.productId, price: props.price, image: props.image })
+            addToCart({ userId: props.userId, productId: props.productId, price: props.price, image: props.image, quantity: productQuantity })
+        }
+        else{
+            const storedCartData = localStorage.getItem('nologincart');
+            const userCart = storedCartData ? JSON.parse(storedCartData) : {total: 0, count: 0};
+
+            if(userCart[props.productId]){
+            userCart[props.productId] += productQuantity;
+            } else {
+            userCart[props.productId] = productQuantity;
+            }
+            userCart.count += productQuantity;
+            userCart.total = Number(userCart.total) + (Number(props.price)*productQuantity);
+            localStorage.setItem('nologincart', JSON.stringify(userCart));
+            //user.cart = userCart;
         }
         
     }
@@ -97,19 +118,17 @@ const ProductPage = () => {
                         </LinkContainer>
                    
                 </p>
-                <p className='product__price'>${product.price}</p>
+                <p className='product__price'>{product.price} Ft</p>
                 <p style={{textAlign: 'justify'}} className='py-3'>
                     <strong>Description:</strong> {product.description}
                 </p>
                 {user && !user.isAdmin && (
-                        <ButtonGroup style={{ width: "90%" }}>
-                            <Form.Select size="lg" style={{ width: "40%", borderRadius: "0" }} ref={quantityRef}>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </Form.Select>
+                        <ButtonGroup style={{ width: "30%" }}>
+                           <FormControl
+                                type="number"
+                                value={productQuantity}
+                                onChange={handleProductQuantityChange}
+                            />
                             <Button size="lg" 
                             onClick={() => handleAddToCart({ userId: user._id, productId: id, price: product.price, image: product.pictures[0].url })}
                             >
@@ -118,6 +137,20 @@ const ProductPage = () => {
                         </ButtonGroup>
                 )}
                 {!user && (
+                        <ButtonGroup style={{ width: "30%" }}>
+                            <FormControl
+                                type="number"
+                                value={productQuantity}
+                                onChange={handleProductQuantityChange}
+                            />
+                            <Button size="sm" 
+                            onClick={() => handleAddToCart({ userId: null, productId: id, price: product.price, image: product.pictures[0].url })}
+                            >
+                                Kosárba
+                            </Button>
+                        </ButtonGroup>
+                )}
+                {/* {!user && (
                         <ButtonGroup style={{ width: "90%" }}>
                             <Form.Select size="lg" style={{ width: "40%", borderRadius: "0" }} ref={quantityRef}>
                                 <option value="1">1</option>
@@ -126,13 +159,13 @@ const ProductPage = () => {
                                 <option value="4">4</option>
                                 <option value="5">5</option>
                             </Form.Select>
-                            <Button size="lg" 
+                            <Button size="sm" 
                             onClick={() => handleAddToCart({ userId: null, productId: id, price: product.price, image: product.pictures[0].url })}
                             >
                                 Kosárba
                             </Button>
                         </ButtonGroup>
-                )}
+                )} */}
                 {isSuccess && <ToastMessage type={'success'} item={product.name} bg='info' title='Added to cart' body={`${product.name} a kosárba került.`}/>}
                 
                 {user && user.isAdmin &&

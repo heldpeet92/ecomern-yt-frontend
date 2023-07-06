@@ -11,6 +11,11 @@ import axios from '../axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateProducts } from '../features/productSlice'
 import ProductPreview from '../components/ProductPreview'
+import AboutSection from '../components/AboutSection'
+import FooterSection from '../components/FooterSection'
+import TestFetcher from '../components/TestFetcher'
+import TestCheckout from '../components/TestCheckout'
+import Payment from '../components/Payment'
 
 const Home = () => {
 
@@ -26,10 +31,12 @@ const Home = () => {
   return (
     <div>
         <img src='https://res.cloudinary.com/djumsmr1d/image/upload/v1685376183/M-8_bvrzrb.png'/>
+        <div >
         <SimpleSlider/>
-      <img className='home-banner' src="https://res.cloudinary.com/learn-code-10/image/upload/v1653947013/yqajnhqf7usk56zkwqi5.png" alt=''/>
+        </div>
+      {/* <img className='home-banner' src="https://res.cloudinary.com/learn-code-10/image/upload/v1653947013/yqajnhqf7usk56zkwqi5.png" alt=''/> */}
         <div className='featured-products-container container mt-4'>
-            <h2>Last Petis</h2>
+            <h2>Kedvenceitek</h2>
             <div className='d-flex justify-content-center flex-wrap'>
             {lastProducts.map((product) =>(
                 <ProductPreview {...product}/>
@@ -43,10 +50,10 @@ const Home = () => {
         </div>
         <div className='sale__banner--container mt-4'>
             {/*sale banner*/}
-            <img src='https://res.cloudinary.com/learn-code-10/image/upload/v1654093280/xkia6f13xxlk5xvvb5ed.png'/>
+            {/* <img src='https://res.cloudinary.com/learn-code-10/image/upload/v1654093280/xkia6f13xxlk5xvvb5ed.png'/> */}
         </div>
-        <div className='recent-products-container container mt-4'>
-            <h2>Categories</h2>
+        {/* <div className='recent-products-container container mt-4'>
+            <h2>Rólunk</h2>
             <Row>
                 {categories.map((category)=>(
                     <LinkContainer to={`/category/${category.name.toLocaleLowerCase()}`}>
@@ -58,22 +65,10 @@ const Home = () => {
                 </LinkContainer>
                 ))}
             </Row>
-        </div>
-        <div>
-            <Row>
-                <Col md={6} style={{height: 400}}>
-
-                </Col>
-                <Col md={6} style={{height: 400}}>
-                    <table>
-                        <tr>
-                            <td>Cím:</td>
-                            <td>2314 Halásztelek, Akácos utca 30/1</td>
-                        </tr>
-                    </table>
-                </Col>
-            </Row>
-        </div>
+        </div> */}
+        {/* <Payment/> */}
+        <AboutSection/>
+        <FooterSection/>
 
     </div>
   )

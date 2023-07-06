@@ -3,7 +3,6 @@ import { Badge, Card } from "react-bootstrap";
 import LinkContainer from "react-router-bootstrap/LinkContainer";
 
 function SimilarProduct({ _id, name, category, pictures }) {
-    console.log(_id);
     return (
         <LinkContainer to={`/product/${_id}`} style={{ cursor: "pointer", width: "13rem", margin: "10px" }}>
             <Card style={{ width: "20rem", margin: "10px" }}>

@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const appApi = createApi({
     reducerPath: "appApi",
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8080" }),
+    baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_APIURL }),
     endpoints: (builder) => ({
         signup: builder.mutation({
             query: (user) => ({
@@ -21,6 +21,7 @@ export const appApi = createApi({
                 body: user,
             }),
         }),
+        
         // creating product
         createProduct: builder.mutation({
             query: (product) => ({
@@ -104,6 +105,7 @@ export const {
     useCreateOrderMutation,
     useDeleteProductMutation,
     useUpdateProductMutation,
+    useGetAllProductsMutation
 } = appApi;
 
 export default appApi;

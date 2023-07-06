@@ -40,7 +40,6 @@ const OrdersAdminPage = () => {
     }
 
     function showOrder(productsObj){
-        console.log(productsObj)
         let productsToShow = products.filter((product) => productsObj[product._id]);
         productsToShow = productsToShow.map((product)=>{
             const productCopy  = {...product};
@@ -48,7 +47,6 @@ const OrdersAdminPage = () => {
             delete productCopy.description;
             return productCopy;
         });
-        console.log(productsToShow);
         setShow(true);
         setOrderToShow(productsToShow);
     }
@@ -63,28 +61,31 @@ const OrdersAdminPage = () => {
                         <th>Ügyfél</th>
                         <th>Termékek</th>
                         <th>Végösszeg</th>
-                        <th>Cím</th>
-                        <th></th>
+                        <th>Cél FOXPOST automata</th>
+                        <th>Állapot</th>
                         <th>Dátum</th>
+                        <th>Részletek</th>
+                        <th>Kupon kód</th>
                     </tr>
                 </thead>
                 <tbody>
                     {orders.map((order)=> (
                         <tr>
-                            <td>{order._id}</td>
+                            <td>MM{order.orderId}</td>
                             <td>{order.owner?.name}</td>
                             <td>{order.count}</td>
                             <td>{order.total} Ft</td>
-                            <td>{order.address}</td>
+                            <td>{order.selectedMachineInfo}</td>
                             <td>
                                 {order.status === "processing" ? (<Button onClick={()=>markShipped(order._id, order.owner?._id)}>Mark as shipped</Button>): <Badge bg="success">Shipped</Badge>}
                             </td>
                             <td>{Moment(order.date).format("YYYY. MM. DD.")}</td>
                             <td>
                                 <span style={{cursor:'pointer'}} onClick={()=>showOrder(order.products)}>
-                                    View order <i className='fa fa-eye'></i>
+                                    Részletek <i className='fa fa-eye'></i>
                                 </span>
                             </td>
+                            <td>MM2023START</td>
                         </tr>
                     ))}
                 </tbody>
@@ -99,7 +100,7 @@ const OrdersAdminPage = () => {
                         <p>
                             <span>{order.count} x </span> {order.name}
                         </p>
-                        <p>Price: ${Number(order.price) * order.count}</p>
+                        <p>Ár: {Number(order.price) * order.count} Ft</p>
                     </div>
                 ))}                
                 <Modal.Footer>

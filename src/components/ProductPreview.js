@@ -2,7 +2,7 @@ import React from "react";
 import { Badge, Card } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
-function ProductPreview({ _id, category, name, pictures }) {
+function ProductPreview({ _id, category, name, pictures, price }) {
     return (
         <LinkContainer to={`/product/${_id}`} style={{ cursor: "pointer", width: "13rem", margin: "10px" }}>
             <Card style={{ width: "20rem", margin: "10px" }}>
@@ -12,6 +12,7 @@ function ProductPreview({ _id, category, name, pictures }) {
                     <Badge bg="warning" text="dark">
                         {category}
                     </Badge>
+                    <Card.Text>{price} Ft</Card.Text>
                 </Card.Body>
             </Card>
         </LinkContainer>

@@ -65,25 +65,24 @@ function handleSubmit(e) {
                 {isSuccess && <Alert variant='success'>Product successfully created</Alert>}
                 {isError && <Alert variant="danger">{error.data}</Alert>}
                 <FormGroup className= "mb-3">
-                    <Form.Label>Product name</Form.Label>
+                    <Form.Label>Termék neve</Form.Label>
                     <FormControl type="text" placeholder="Enter product name" value={name} required onChange={(e)=>setName(e.target.value)}/>
                 </FormGroup>
                 <FormGroup className= "mb-3">
-                    <Form.Label>Product description</Form.Label>
+                    <Form.Label>Termék leírása</Form.Label>
                     <FormControl type="textarea" style={{height: "100px"}} placeholder="Enter product description" value={description} required onChange={(e)=>setDescription(e.target.value)}/>
                 </FormGroup>
                 <FormGroup className= "mb-3">
-                    <Form.Label>Product price</Form.Label>
+                    <Form.Label>Termék ára</Form.Label>
                     <FormControl type="number" placeholder="Enter product price" value={price} required onChange={(e)=>setPrice(e.target.value)}/>
                 </FormGroup>
                 <FormGroup className= "mb-3" onChange={(e)=>setCategory(e.target.value)}>
-                    <Form.Label>Category</Form.Label>
+                    <Form.Label>Kategória</Form.Label>
                     <Form.Select>
-                      <option disabled selected>-- SELECT CATEGORY --</option>
-                      <option value="technology">technology</option>
-                      <option value="tablets">tablets</option>
-                      <option value="phones">phones</option>
-                      <option value="laptops">laptops</option>
+                      <option disabled selected>-- VÁLASSZ --</option>
+                      <option value="illatgyertya">Illatgyertya</option>
+                      <option value="wax">Wax</option>
+                      <option value="furdobomba">Fürdőbomba</option>
                     </Form.Select>
                 </FormGroup>
                 <FormGroup className= "mb-3">

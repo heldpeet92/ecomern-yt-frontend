@@ -4,6 +4,10 @@ import appApi from "../services/appApi";
 
 const initialState =[];
 
+let myparam = "asdfasdfas"
+
+
+
 export const productSlice = createSlice({
     name: 'products',
     initialState,

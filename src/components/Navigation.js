@@ -17,6 +17,16 @@ function Navigation() {
   const notificationRef = useRef(null);
   const [bellPos, setBellPos] = useState({});
 
+  let userCartOjb = user?.cart;
+    
+  const storedCartData = localStorage.getItem('nologincart');
+  const nologincart = storedCartData ? JSON.parse(storedCartData) : {total: 0, count: 0};
+
+
+  if(!user){
+      userCartOjb = nologincart;
+  }
+
   function handleLogout(){
     dispatch(logout());
   }
@@ -41,7 +51,7 @@ function Navigation() {
     <Navbar expand="lg" className='mmNavBar'>
       <Container>
         <LinkContainer to={'/'}>
-            <Navbar.Brand href="#home" className='mmTitle'><b>MELT ME SHOP</b></Navbar.Brand>
+            <Navbar.Brand href="#home" className='mmTitle'><b>MELT ME</b></Navbar.Brand>
         </LinkContainer>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -52,13 +62,13 @@ function Navigation() {
               <Nav.Link>Login</Nav.Link>
                 </LinkContainer>
               )}
-              {user && !user.isAdmin && (
+              {(
                 <LinkContainer to="/cart">
                   <Nav.Link>
                     <i className='fas fa-shopping-cart'></i>
-                    {user?.cart.count>0 &&(
+                    {userCartOjb?.count>0 &&(
                       <span className='badge badge-warning' id ="cartcount">                        
-                        {user?.cart.count}
+                        {userCartOjb?.count}
                       </span>
                     )}
                   </Nav.Link>
@@ -109,7 +119,7 @@ function Navigation() {
         </Navbar.Collapse>
       </Container>
       {/**Notifications */}
-      <div className='notifications-container' style={{position:'absolute', top:bellPos.top + 30, left: bellPos.left}}>
+      {/* <div className='notifications-container' style={{position:'absolute', top:bellPos.top + 30, left: bellPos.left}}>
         {user?.notifications.map((noti)=>{
           <p className={`notification-${noti.staus}`}>
             {noti.message}
@@ -117,7 +127,7 @@ function Navigation() {
             <span>{noti.time}</span>
           </p>
         })}
-      </div>
+      </div> */}
     </Navbar>
   );
 }
