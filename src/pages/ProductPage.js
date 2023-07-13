@@ -2,7 +2,7 @@ import axios from '../axios';
 import React, {useState, useEffect, useRef} from 'react'
 import AliceCarousel from 'react-alice-carousel';
 import { Badge, ButtonGroup, Col, Container, Row, Button, Form, FormControl } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {  useParams } from 'react-router-dom'
 import Loading from '../components/Loading';
 import SimilarProduct from '../components/SimilarProduct';
@@ -13,18 +13,28 @@ import { useAddToCartMutation } from '../services/appApi';
 import ToastMessage from '../components/ToastMessage';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { addtonologincart } from '../features/nologincartSlice';
 
 const ProductPage = () => {
     const { id } = useParams();
+    const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
     const [product, setProduct] = useState(null);
+    const [productIngs, setProductIngs] = useState([]);
     const [similar, setSimilar] = useState(null);
     const [addToCart, {isSuccess}] = useAddToCartMutation();
     const quantityRef = useRef();
 
     const [productQuantity, setproductQuantity] = useState(1);
 
+    const [nologinSuccess, setNologinSuccess] = useState(false);
   
+    const verifyQuantity = () =>{
+        if (productQuantity<1){
+            setproductQuantity(1);
+        }
+    }
+
     const handleProductQuantityChange = (event) => {
       setproductQuantity(event.target.value);
     };
@@ -59,6 +69,7 @@ const ProductPage = () => {
         axios.get(`/products/${id}`).then(({ data }) => {
             setProduct(data.product);
             setSimilar(data.similar);
+            setProductIngs(data.product.ingredients.split(";"));
         });
     }, [id]);
 
@@ -85,21 +96,15 @@ const ProductPage = () => {
     const handleAddToCart = (props) =>{
 
         if(!!user){
-            addToCart({ userId: props.userId, productId: props.productId, price: props.price, image: props.image, quantity: productQuantity })
+            addToCart({ userId: props.userId, productId: props.productId, price: props.price, image: props.image, quantity: Number(productQuantity) })
         }
         else{
-            const storedCartData = localStorage.getItem('nologincart');
-            const userCart = storedCartData ? JSON.parse(storedCartData) : {total: 0, count: 0};
-
-            if(userCart[props.productId]){
-            userCart[props.productId] += productQuantity;
-            } else {
-            userCart[props.productId] = productQuantity;
-            }
-            userCart.count += productQuantity;
-            userCart.total = Number(userCart.total) + (Number(props.price)*productQuantity);
-            localStorage.setItem('nologincart', JSON.stringify(userCart));
+            let prodId = props.productId;
+            let quantity = Number(productQuantity);
+            let price = Number(props.price);
+            dispatch(addtonologincart({prodId,quantity,price}));
             //user.cart = userCart;
+            setNologinSuccess(true);
         }
         
     }
@@ -120,7 +125,21 @@ const ProductPage = () => {
                 </p>
                 <p className='product__price'>{product.price} Ft</p>
                 <p style={{textAlign: 'justify'}} className='py-3'>
-                    <strong>Description:</strong> {product.description}
+                    <strong>Leírás:</strong> {product.description}
+                </p>
+                <div style={{textAlign: 'justify'}} className='py-3'>
+                    <strong>Összetevők: </strong> 
+                    <ul>
+                    {productIngs.map((item,i) => 
+                        <li key={i}>- {item}</li>
+                    )}
+                    </ul>
+                </div>
+                <p style={{textAlign: 'justify'}} className='py-3'>
+                    <strong>Egyéb információ:</strong> {product.otherDescription}
+                </p>
+                <p style={{textAlign: 'justify'}} className='py-3'>
+                    <strong>Súly és időtartam:</strong> {product.sizeAndDuration}
                 </p>
                 {user && !user.isAdmin && (
                         <ButtonGroup style={{ width: "30%" }}>
@@ -130,7 +149,7 @@ const ProductPage = () => {
                                 onChange={handleProductQuantityChange}
                             />
                             <Button size="lg" 
-                            onClick={() => handleAddToCart({ userId: user._id, productId: id, price: product.price, image: product.pictures[0].url })}
+                            onClick={() => handleAddToCart({ userId: user._id, productId: id, price: product.price, image: product.pictures[0].url.replace("upload/","upload/w_500,f_auto/") })}
                             >
                                 Kosárba
                             </Button>
@@ -140,11 +159,13 @@ const ProductPage = () => {
                         <ButtonGroup style={{ width: "30%" }}>
                             <FormControl
                                 type="number"
+                                min="1"
+                                onKeyUp={verifyQuantity}
                                 value={productQuantity}
                                 onChange={handleProductQuantityChange}
                             />
                             <Button size="sm" 
-                            onClick={() => handleAddToCart({ userId: null, productId: id, price: product.price, image: product.pictures[0].url })}
+                            onClick={() => handleAddToCart({ userId: null, productId: id, price: product.price, image: product.pictures[0].url.replace("upload/","upload/w_500,f_auto/") })}
                             >
                                 Kosárba
                             </Button>
@@ -166,19 +187,19 @@ const ProductPage = () => {
                             </Button>
                         </ButtonGroup>
                 )} */}
-                {isSuccess && <ToastMessage type={'success'} item={product.name} bg='info' title='Added to cart' body={`${product.name} a kosárba került.`}/>}
+                {/* {(isSuccess || nologinSuccess) && <ToastMessage type={'success'} item={product.name} bg='info' title='Added to cart' body={`${product.name} a kosárba került.`}/>} */}
                 
                 {user && user.isAdmin &&
                     (
                         <LinkContainer to={`/product/${product._id}/edit`}>
-                            <Button size='lg'>Edit</Button>
+                            <Button size='lg'>Szerkesztés</Button>
                         </LinkContainer>
                     )
                 }
             </Col>
         </Row>
         <div className='my-4'>
-            <h2>Similar Products</h2>
+            <h2>Ez is érdekelhet!</h2>
             <div className='d-flex justify-content-center align-items-center flex-wrap'>
                 <AliceCarousel mouseTracking items={similarProducts} responsive={responsive} controlsStrategy="alternate"/>
             </div>

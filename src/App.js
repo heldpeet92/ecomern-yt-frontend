@@ -22,27 +22,26 @@ import ThankYouPage from './pages/ThankYouPage';
 import Completion from './components/Completion';
 import Payment from './components/Payment';
 import {loadStripe} from '@stripe/stripe-js';
+import FooterSection from './components/FooterSection';
+import ProfilePage from './pages/ProfilePage';
+import { setNologincart } from './features/nologincartSlice';
+import TnC from './pages/TnC';
+import AboutUsPage from './pages/AboutUsPage';
+import PrivPol from './pages/PrivPol';
 
 function App() {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [ stripePromise, setStripePromise ] = useState(null);
-  useEffect(()=>{
-    // const socket = io("ws://"+process.env.REACT_APP_APIURL);
-    // socket.off('notification').on('notification', (msgObject, user_id)=>{
-    //   //logic fo notification
-    //   if(user_id === user._id){
-    //     dispatch(addNotification(msgObject));
-    //   }
-    // });
-    // socket.off('new-order').on('new-order', (msgObject)=>{
-    //   if(user.isAdmin){
-    //     dispatch(addNotification(msgObject));
-    //   }
-    // })
-    
-  })
-
+  
+  useEffect(() => {
+    // Retrieve nologincart from local storage
+    const nologincartString = localStorage.getItem('nologincart');
+    if (nologincartString) {
+      const nologincart = JSON.parse(nologincartString);
+      dispatch(setNologincart(nologincart));
+    }
+  }, [dispatch]);
 
   return (
     <div className='App'>
@@ -56,8 +55,11 @@ function App() {
           <Route path='/signup' element={<Signup/>}/>
         </>)}
         <Route path='/cart' element={<CartPage/>} />
+        <Route path='/termsandconditions' element={<TnC/>} />
         {user && <>
           <Route path='/orders' element={<OrdersPage/>} />
+          <Route path='/profile' element={<ProfilePage/>} />
+          
         </>}
         {user && user.isAdmin &&(
 
@@ -70,10 +72,13 @@ function App() {
         <Route path='/category/:category' element={<CategoryPage/>}/>
         <Route path='/new-product' element={<NewProduct/>}/>
         <Route path='/thankyou' element={<ThankYouPage/>}/>
+        <Route path='/aboutus' element={<AboutUsPage/>}/>
+        <Route path='/privacypolicy' element={<PrivPol/>}/>
         <Route path='*' element={<Home/>}/>
         {/* <Route path="/" element={<Payment stripePromise={stripePromise} />} /> */}
         {/* <Route path="/completion" element={<Completion stripePromise={stripePromise} />} /> */}
       </Routes>
+      <FooterSection/>
       </BrowserRouter>
     </div>
   );

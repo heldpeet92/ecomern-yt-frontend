@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Slider from "react-slick";
 import './SimpleSlider.css'
 import { Col, Row } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 
 export default class SimpleSlider extends Component {
   render() {
@@ -25,13 +26,26 @@ export default class SimpleSlider extends Component {
           <div>
             <Row>
               <Col md={4}>
-                <a href="/category/Illatgyertya"><img style={{height:'100%', width: '100%', objectFit:'cover'}} src="https://res.cloudinary.com/djumsmr1d/image/upload/w_1200,f_auto/v1688051298/IMG_3672_hdfa5o.jpg"/></a>
+              <LinkContainer className='image-link' to={`/category/Illatgyertya`} style={{cursor:'pointer'}}>
+                {/* <a className="image-link" href="/category/Illatgyertya"> */}
+                <div>
+                  <img style={{height:'100%', width: '100%', objectFit:'cover'}} src="https://res.cloudinary.com/djumsmr1d/image/upload/w_1200,f_auto/v1688051298/IMG_3672_hdfa5o.jpg"/>
+                  <span className="text-overlay">Illatgyertyák</span>
+                  {/* </a> */}
+                  </div>
+                  </LinkContainer>
               </Col>
               <Col md={4}>
-              <a href="/category/Wax"><img style={{height:'100%', width: '100%', objectFit:'cover'}} src="https://res.cloudinary.com/djumsmr1d/image/upload/w_1200,f_auto/v1688051206/IMG_3744_fxnb4q.jpg"></img></a>
+              <LinkContainer className='image-link' to={`/category/Wax`} style={{cursor:'pointer'}}>
+                <div>
+                 <img style={{height:'100%', width: '100%', objectFit:'cover'}} src="https://res.cloudinary.com/djumsmr1d/image/upload/w_1200,f_auto/v1688051206/IMG_3744_fxnb4q.jpg"></img>
+                 <span className="text-overlay">Waxok</span>
+              </div>
+              </LinkContainer>
               </Col>
               <Col md={4}>
               <img style={{height:'100%', width: '100%', objectFit:'cover'}} src="https://res.cloudinary.com/djumsmr1d/image/upload/w_1200,f_auto/v1688051206/IMG_3852_bfpxcg.jpg"/>
+              
               </Col>
             </Row>
           </div>

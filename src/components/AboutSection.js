@@ -7,12 +7,12 @@ const AboutSection = () => {
       <div className="container">
         <div className="row">
           <div className="col-lg-6">
-            <h2>About Us</h2>
+            <h2>Rólunk</h2>
             <p>
-              Welcome to our portfolio website! We are a team of passionate developers and designers dedicated to creating exceptional digital experiences. With a deep understanding of web technologies and a keen eye for aesthetics, we strive to deliver elegant and functional solutions for our clients.
+            A Melt Me egy családi vállalkozás, ami legfőképp kézműves, szója viaszból készült illatgyertyákat készít. Az alap koncepciót másfél évvel ezelőtt álmodtuk meg. Azóta zajlik az első termékek fejlesztése, tökéletesítése. Célunk egy minőségi vegán viasz alapú prémium illatgyertya megalkotása volt. Termékünk vegán, állatokon nem tesztelt alapanyagokból készül, ami természetes alapanyagokat tartalmaz. Jelenleg 4 illatból áll a kollekciónk és ezeket egy méretben lehet kapni, amit rövid határidőn belül szeretnénk további illatokkal bővíteni. Célunk, hogy az ország legjobb minőségű illatgyertyáit és illatviaszait készítsük el és mutassuk meg nektek. Emellett szeretnénk elérni, hogy minden háztartásban legalább egy Melt Me illatgyertya jelen legyen. (És még ki tudja mennyi mindennel készülünk 🙂 )
             </p>
             <p>
-              Our expertise lies in building interactive and user-friendly web applications using modern frameworks like React.js. We are constantly honing our skills and staying up-to-date with the latest industry trends to provide cutting-edge solutions that meet the unique requirements of each project.
+            Az alapanyagainkat gondosan válogatjuk meg és a gyertya elkészítése folyamán figyelünk arra, hogy minden a lehető legtökéletesebb legyen. Mert a mi gyertyánktól te is garantáltan elolvadsz!
             </p>
           </div>
           <div className="col-lg-6">

@@ -16,11 +16,15 @@ export const userSlice = createSlice({
             state.notifications.forEach((obj)=>{
                 obj.status = 'read';
             })
+        },
+        updateUser:(_, action) => {
+            return action.payload;
         }
     },
     extraReducers: (builder) =>{
         builder.addMatcher(appApi.endpoints.signup.matchFulfilled, (_, { payload }) => payload);
         builder.addMatcher(appApi.endpoints.login.matchFulfilled, (_, { payload }) => payload);
+        builder.addMatcher(appApi.endpoints.editUser.matchFulfilled, (_, { payload }) => payload);
         builder.addMatcher(appApi.endpoints.addToCart.matchFulfilled, (_, { payload }) => payload);
         builder.addMatcher(appApi.endpoints.removeFromCart.matchFulfilled, (_, { payload }) => payload);
         builder.addMatcher(appApi.endpoints.increaseCartProduct.matchFulfilled, (_, { payload }) => payload);
@@ -28,5 +32,5 @@ export const userSlice = createSlice({
         builder.addMatcher(appApi.endpoints.createOrder.matchFulfilled, (_, { payload }) => payload);
     }
 })
-export const {logout, addNotification, resetNotifications} = userSlice.actions;
+export const {logout, addNotification, resetNotifications,updateUser} = userSlice.actions;
 export default userSlice.reducer;

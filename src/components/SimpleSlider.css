@@ -8,3 +8,29 @@ h3{
     position: relative;
     text-align: center;
 }
+
+.image-link {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+  }
+  
+  .text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 40px;
+    transition: font-size 0.3s ease-in-out;
+    background-color: rgba(0, 0, 0, 0.5); /* Half-transparent background */
+    padding: 5px; /* Adjust padding as needed */
+    /* Add any additional styling as needed */
+  }
+
+  .text-overlay:hover {
+    font-size: 60px; /* Increased font size on hover */
+  }
+  
+  /* Add any additional styling for the image and link if desired */
+  

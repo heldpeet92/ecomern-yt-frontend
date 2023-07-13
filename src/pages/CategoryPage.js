@@ -36,10 +36,11 @@ const CategoryPage = () => {
             <div className={`pt-3 ${category}-banner-container category-banner-container`}>
                 <h1 className='text-center'>{category[0].toUpperCase() + category.slice(1)}</h1>
             </div>
+            {productSearch.length>0 &&(
             <div className='filters-container d-flex justify-content-center pt-4 pb-4'>
                 <input className='form-control' style={{width:'30%'}} type='search' placeholder='Keresés' onChange={(e)=>setSearchTerm(e.target.value)}/>
-            </div>
-            {productSearch.length === 0 ? <h2>Sajnos nincs ilyen termékünk</h2>:
+            </div>)}
+            {productSearch.length === 0 ? <h2>Hamarosan!</h2>:
             <Container>
                 <Row>
                     

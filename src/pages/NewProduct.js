@@ -8,6 +8,9 @@ import axios from '../axios.js';
 const NewProduct = () => {
   const [name,setName] = useState("");
   const [description,setDescription] = useState("");
+  const [otherDescription,setOtherDescription] = useState("");
+  const [ingredients,setIngredients] = useState("");
+  const [sizeAndDuration,setSizeAndDuration] = useState("");
   const [price,setPrice] = useState("");
   const [category,setCategory] = useState("");
   const [images,setImages] = useState([]);
@@ -32,7 +35,7 @@ function handleSubmit(e) {
   if (!name || !description || !price || !category || !images.length) {
       return alert("Please fill out all the fields");
   }
-  createProduct({ name, description, price, category, images }).then(({ data }) => {
+  createProduct({ name, description,otherDescription,ingredients,sizeAndDuration, price, category, images }).then(({ data }) => {
       if (data.length > 0) {
           setTimeout(() => {
               navigate("/");
@@ -49,7 +52,7 @@ function handleSubmit(e) {
         },
         (error, result) => {
             if (!error && result.event === "success") {
-                setImages((prev) => [...prev, { url: result.info.url, public_id: result.info.public_id }]);
+                setImages((prev) => [...prev, { url: result.info.url.replace("upload/","upload/w_500,f_auto/"), public_id: result.info.public_id }]);
             }
         }
     );
@@ -73,6 +76,18 @@ function handleSubmit(e) {
                     <FormControl type="textarea" style={{height: "100px"}} placeholder="Enter product description" value={description} required onChange={(e)=>setDescription(e.target.value)}/>
                 </FormGroup>
                 <FormGroup className= "mb-3">
+                    <Form.Label>Termék egyéb leírása</Form.Label>
+                    <FormControl type="textarea" style={{height: "100px"}} placeholder="Enter product description" value={otherDescription} required onChange={(e)=>setOtherDescription(e.target.value)}/>
+                </FormGroup>
+                <FormGroup className= "mb-3">
+                    <Form.Label>Termék összetevők</Form.Label>
+                    <FormControl type="textarea" style={{height: "100px"}} placeholder="VESSZŐVEL ELVÁLASZTVA!" value={ingredients} required onChange={(e)=>setIngredients(e.target.value)}/>
+                </FormGroup>
+                <FormGroup className= "mb-3">
+                    <Form.Label>Méret és időtartam</Form.Label>
+                    <FormControl rows="3" type="textarea" style={{height: "100px"}} placeholder="méret és időtartam" value={sizeAndDuration} required onChange={(e)=>setSizeAndDuration(e.target.value)}/>
+                </FormGroup>
+                <FormGroup className= "mb-3">
                     <Form.Label>Termék ára</Form.Label>
                     <FormControl type="number" placeholder="Enter product price" value={price} required onChange={(e)=>setPrice(e.target.value)}/>
                 </FormGroup>
@@ -80,9 +95,9 @@ function handleSubmit(e) {
                     <Form.Label>Kategória</Form.Label>
                     <Form.Select>
                       <option disabled selected>-- VÁLASSZ --</option>
-                      <option value="illatgyertya">Illatgyertya</option>
-                      <option value="wax">Wax</option>
-                      <option value="furdobomba">Fürdőbomba</option>
+                      <option value="Illatgyertya">Illatgyertya</option>
+                      <option value="Wax">Wax</option>
+                      <option value="Fürdőbomba">Fürdőbomba</option>
                     </Form.Select>
                 </FormGroup>
                 <FormGroup className= "mb-3">
@@ -91,7 +106,7 @@ function handleSubmit(e) {
                      {
                       images.map((image)=>(
                         <div className='image-preview'>
-                          <img src={image.url}/>
+                          <img src={image.url.replace("upload/","upload/w_500,f_auto/")}/>
                           <i className='fa fa-times-circle' onClick={()=>handleRemoveImg(image)}></i>
                         </div>
                       ))

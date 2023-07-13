@@ -18,7 +18,6 @@ const OrdersAdminPage = () => {
         .then(({data})=>{
             setLoading(false);
             setOrders(data);
-            console.log(data);
         }).catch((e)=>{
             setLoading(false);
         });
@@ -61,7 +60,8 @@ const OrdersAdminPage = () => {
                         <th>Ügyfél</th>
                         <th>Termékek</th>
                         <th>Végösszeg</th>
-                        <th>Cél FOXPOST automata</th>
+                        <th>Szállítás</th>
+                        <th>Fizetés</th>
                         <th>Állapot</th>
                         <th>Dátum</th>
                         <th>Részletek</th>
@@ -72,10 +72,11 @@ const OrdersAdminPage = () => {
                     {orders.map((order)=> (
                         <tr>
                             <td>MM{order.orderId}</td>
-                            <td>{order.owner?.name}</td>
+                            <td>{order.owner?.name || order.name}</td>
                             <td>{order.count}</td>
                             <td>{order.total} Ft</td>
-                            <td>{order.selectedMachineInfo}</td>
+                            <td>{order.fullShippingInfo}</td>
+                            <td>{order.fullPaymentInfo}</td>
                             <td>
                                 {order.status === "processing" ? (<Button onClick={()=>markShipped(order._id, order.owner?._id)}>Mark as shipped</Button>): <Badge bg="success">Shipped</Badge>}
                             </td>
@@ -85,7 +86,7 @@ const OrdersAdminPage = () => {
                                     Részletek <i className='fa fa-eye'></i>
                                 </span>
                             </td>
-                            <td>MM2023START</td>
+                            <td>{order.discountCode}</td>
                         </tr>
                     ))}
                 </tbody>

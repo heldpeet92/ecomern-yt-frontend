@@ -21,6 +21,14 @@ export const appApi = createApi({
                 body: user,
             }),
         }),
+
+        editUser: builder.mutation({
+            query: (user) => ({
+                url: `/users/${user.id}`,
+                method: "PATCH",
+                body: user,
+            }),
+        }),
         
         // creating product
         createProduct: builder.mutation({
@@ -105,7 +113,7 @@ export const {
     useCreateOrderMutation,
     useDeleteProductMutation,
     useUpdateProductMutation,
-    useGetAllProductsMutation
+    useEditUserMutation
 } = appApi;
 
 export default appApi;

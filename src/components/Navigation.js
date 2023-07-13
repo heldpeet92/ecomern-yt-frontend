@@ -12,6 +12,7 @@ import axios from '../axios';
 
 function Navigation() {
   const user = useSelector((state) => state.user);
+  const nologincart = useSelector((state) => state.nologincart);
   const dispatch = useDispatch();
   const bellRef = useRef(null);
   const notificationRef = useRef(null);
@@ -20,9 +21,9 @@ function Navigation() {
   let userCartOjb = user?.cart;
     
   const storedCartData = localStorage.getItem('nologincart');
-  const nologincart = storedCartData ? JSON.parse(storedCartData) : {total: 0, count: 0};
+  //const nologincart = storedCartData ? JSON.parse(storedCartData) : {total: 0, count: 0};
 
-
+  
   if(!user){
       userCartOjb = nologincart;
   }
@@ -31,27 +32,18 @@ function Navigation() {
     dispatch(logout());
   }
 
-  const unreadNotifications = user?.notifications.reduce((acc,current)=>{
-    if(current.status === 'unread'){
-      return acc + 1;
-    }
-    return acc;
-  },0)
-
   function handleToggleNotifications(){
     const position = bellRef.current.getBoundingClientRect();
     setBellPos(position);
     notificationRef.current.style.display = notificationRef.current.style.display === 'block' ? 'none': 'block';
     dispatch(resetNotifications());
-    if(unreadNotifications>1){
-    axios.post(`users/${user._id},updateNotifications`);}
   }
 
   return (
     <Navbar expand="lg" className='mmNavBar'>
       <Container>
         <LinkContainer to={'/'}>
-            <Navbar.Brand href="#home" className='mmTitle'><b>MELT ME</b></Navbar.Brand>
+            <Navbar.Brand href="#home" className='mmTitle'><b>MELT ME </b></Navbar.Brand>
         </LinkContainer>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -59,7 +51,7 @@ function Navigation() {
             {/** if no user */}
             {!user && (
                 <LinkContainer to="/login">
-              <Nav.Link>Login</Nav.Link>
+              <Nav.Link>Bejelentkezés</Nav.Link>
                 </LinkContainer>
               )}
               {(
@@ -77,9 +69,6 @@ function Navigation() {
             {/** if user */}
             {user && (
               <>
-                <Nav.Link style={{position:'relative'}} onClick={handleToggleNotifications}>
-                  <i className='fas fa-bell' ref={bellRef} data-count={unreadNotifications || null}></i>
-                </Nav.Link>
                 <NavDropdown title={`${user.email}${user.isAdmin? ' (Admin)' : ''}`} id="basic-nav-dropdown">
                   {user.isAdmin &&(
                     <>
@@ -99,12 +88,17 @@ function Navigation() {
                     <>
                     <LinkContainer to="/cart">
                       <NavDropdown.Item href="#action/3.1">
-                      Cart
+                      Kosaram
                       </NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/orders">
                       <NavDropdown.Item href="#action/3.1">
-                      My Orders
+                      Rendeléseim
+                      </NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/profile">
+                      <NavDropdown.Item href="#action/3.1">
+                      Profilom
                       </NavDropdown.Item>
                       </LinkContainer>
                     </>
