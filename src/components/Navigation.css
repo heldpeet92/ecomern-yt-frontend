@@ -32,17 +32,9 @@
     background-color: #779EA6;
 }
 .mmTitle{
-    font-family: Noto-Serif-Display-Medium, sans-serif;
+    /* Local Noto font files were gitignored and never shipped; use Google Fonts. */
+    font-family: 'Noto Serif Display', Georgia, serif;
     font-size: 40px;
-}
-@font-face {
-    font-family: 'Noto-Serif-Display-Medium';
-    src:url('../../src/fonts//Noto-Serif-Display-Medium.ttf.woff') format('woff'),
-        url('../../src/fonts//Noto-Serif-Display-Medium.ttf.svg#Noto-Serif-Display-Medium') format('svg'),
-        url('../../src/fonts//Noto-Serif-Display-Medium.ttf.eot'),
-        url('../../src/fonts/Noto-Serif-Display-Medium.ttf.eot') format('embedded-opentype'); 
-    font-weight: normal;
-    font-style: normal;
 }
 .notifications-container{
     padding-top: 20px;
